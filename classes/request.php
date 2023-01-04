@@ -32,7 +32,7 @@ class request
     public function changeStatus(string $id, string $status)
     {
         global $DB;
-        $sql = 'update {request} set status = :status where id= :id';
+        $sql = 'update {workflow_request} set status = :status where id= :id';
         $params = [
             'status' => $status,
             'id' => $id,
@@ -49,7 +49,7 @@ class request
     {
         global $DB;
         $this->changeStatus($id, $status);
-        $sql = 'update {request} set instructorcomment = :ins_comment where id= :id';
+        $sql = 'update {workflow_request} set instructorcomment = :ins_comment where id= :id';
         $params = [
             'ins_comment' => $ins_comment,
             'id' => $id,
@@ -65,7 +65,7 @@ class request
     {
         global $DB;
         $this->changeStatus($id, $status);
-        $sql = 'update {request} set lecturercomment = :lec_comment where id= :id';
+        $sql = 'update {workflow_request} set lecturercomment = :lec_comment where id= :id';
         $params = [
             'lec_comment' => $lec_comment,
             'id' => $id,
@@ -156,7 +156,7 @@ class request
         $record->filename = $filename;
 
         try {
-            return $DB->insert_record('request', $record, false);
+            return $DB->insert_record('workflow_request', $record, false);
         } catch (dml_exception $e) {
             return false;
         }
@@ -166,7 +166,7 @@ class request
     {
         global $DB;
         try {
-            return $DB->get_records('request');
+            return $DB->get_records('workflow_request');
         } catch (dml_exception $e) {
             return [];
         }
@@ -175,7 +175,7 @@ class request
     public function filterRequests(string $type)
     {
         global $DB;
-        return $DB->get_records_select('request', 'type = :type', [
+        return $DB->get_records_select('workflow_request', 'type = :type', [
             'type' => $type
         ]);
     }
@@ -188,14 +188,14 @@ class request
             'id' => $requestid,
         ];
 
-        return $DB->get_field_select('request', 'status', $sql, $params);
+        return $DB->get_field_select('workflow_request', 'status', $sql, $params);
     }
 
     public function getRequest($requestid)
     {
         global $DB;
         return $DB->get_record(
-            'request',
+            'workflow_request',
             [
                 'id' => $requestid
             ]
@@ -204,7 +204,7 @@ class request
 
     public function getAllPendingRequestsbyWorkflow($workflowid){
         global $DB;
-        return $DB->get_records_select('request', 'workflowid = :workflowid and status=:status', [
+        return $DB->get_records_select('workflow_request', 'workflowid = :workflowid and status=:status', [
             'workflowid' => $workflowid,
             'status' => 'pending'
         ]);
@@ -212,7 +212,7 @@ class request
     public function getRequestsByWorkflow($cmid)
     {
         global $DB;
-        return $DB->get_records_select('request', 'workflowid = :workflowid', [
+        return $DB->get_records_select('workflow_request', 'workflowid = :workflowid', [
             'workflowid' => $cmid
         ]);
     }
@@ -220,7 +220,7 @@ class request
     public function getValidRequestsByWorkflow($workflowid)
     {
         global $DB;
-        return $DB->get_records_select('request', 'workflowid = :workflowid and status=:status', [
+        return $DB->get_records_select('workflow_request', 'workflowid = :workflowid and status=:status', [
             'workflowid' => $workflowid,
             'status' => 'valid',
         ]);
@@ -229,7 +229,7 @@ class request
     public function getRequestsByWorkflow_Student($userid, $cmid)
     {
         global $DB;
-        return $DB->get_records_select('request', 'workflowid = :workflowid and studentid=:userid', [
+        return $DB->get_records_select('workflow_request', 'workflowid = :workflowid and studentid=:userid', [
             'workflowid' => $cmid,
             'userid' => $userid
         ]);
@@ -251,7 +251,7 @@ class request
         $params = [
             'id' => $requestid
         ];
-        return $DB->get_field_select('request', 'activityid', $sql, $params);
+        return $DB->get_field_select('workflow_request', 'activityid', $sql, $params);
     }
 
     public function getActivityName($requestid)
@@ -286,7 +286,7 @@ class request
         $params = [
             'id' => $id
         ];
-        return $DB->get_field_select('request', 'studentid', $sql, $params);
+        return $DB->get_field_select('workflow_request', 'studentid', $sql, $params);
     }
 
     public function finalizeRequest(

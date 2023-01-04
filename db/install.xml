@@ -28,7 +28,7 @@
                 <KEY NAME="lecturerid" TYPE="foreign" FIELDS="lecturerid" REFTABLE="user" REFFIELDS="id"/>
             </KEYS>
         </TABLE>
-        <TABLE NAME="request" COMMENT="each record is an unique request">
+        <TABLE NAME="workflow_request" COMMENT="each record is an unique request">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="request" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
